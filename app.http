@@ -18,8 +18,13 @@ Content-Type: application/json
 GET http://localhost:3000/todos/?priority=MEDIUM&status=DONE
 ###
 
-GET http://localhost:3000/todos/1/
+GET http://localhost:3000/todos/2/
 ###
 
 DELETE http://localhost:3000/todos/1/
 ###
+
+PUT http://localhost:3000/todos/2/
+Content-Type: application/json
+
+{"todo":"Learn React JS"}

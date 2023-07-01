@@ -46,7 +46,7 @@ app.post("/todos/", async (request, response) => {
         VALUES (${id},'${todo}','${priority}','${status}');
     `;
   await db.run(addRowsQuery);
-  response.send("Data Added into todo Table");
+  response.send("Todo Successfully Added");
 });
 
 //Get all info of the table
@@ -95,6 +95,42 @@ app.delete("/todos/:todoId/", async (request, response) => {
 app.put("/todos/:todoId/", async (request, response) => {
   const { todoId } = request.params;
   const { todo, priority, status } = request.body;
+  let toUpdate = "";
+  let field = "";
+  switch (true) {
+    case todo !== undefined:
+      toUpdate = todo;
+      field = "todo";
+      break;
+    case priority !== undefined:
+      toUpdate = priority;
+      field = "priority";
+      break;
+    case status !== undefined:
+      toUpdate = status;
+      field = "status";
+      break;
+    default:
+      break;
+  }
+
+  const updateQuery = `UPDATE todo SET ${field} = '${toUpdate}' WHERE id = ${todoId}`;
+  await db.run(updateQuery);
+  let successMessage = "";
+  switch (field) {
+    case "todo":
+      successMessage = "Todo Updated";
+      break;
+    case "priority":
+      successMessage = "Priority Updated";
+      break;
+    case "status":
+      successMessage = "Status Updated";
+      break;
+    default:
+      break;
+  }
+  response.send(successMessage);
 });
 
 module.exports = app;
